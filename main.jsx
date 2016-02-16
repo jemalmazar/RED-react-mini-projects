@@ -1,59 +1,90 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-// React Component
-var Timer = React.createClass({
+var TweetBox = React.createClass({
+    // built-in React method
+    propTypes: {
+      maxLength: React.PropTypes.number.isRequired
+    },
+    // built-in React method
+    getDefaultProps: function() {
+      return {
+        maxLength: 140
+      }
+    },
+    // built-in React method
+    getInitialState: function(){
+      return {
+        text: '',
+        photoAdded: false
+      }
+    },
 
-  getInitialState : function(){
-    return {
-      secondsElapsed: 0
+    handleChange: function(event){
+      this.setState({ text: event.target.value })
+    },
+
+    remainingChars: function(){
+      if (this.state.photoAdded){
+        return (this.props.maxLength - 23 - this.state.text.length);
+      } else {
+        return (this.props.maxLength - this.state.text.length);
+      }
+    },
+
+    overflowAlert: function(){
+      if (this.remainingChars() < 0) {
+
+        if(this.state.photoAdded) {
+          var beforeOverflowText = this.state.text.substring((this.props.maxLength - 10) - 23, this.props.maxLength);
+          var overflowText = this.state.text.substring(this.props.maxLength - 23);
+        } else {
+          var beforeOverflowText = this.state.text.substring((this.props.maxLength - 10), this.props.maxLength);
+          var overflowText = this.state.text.substring(this.props.maxLength);
+        }
+
+        return (
+          <div className="alert alert-warning">
+            <strong>Oops too long:...&nbsp;{beforeOverflowText}<span className="bg-danger">{overflowText}</span></strong>
+          </div>
+        )
+      } else {
+        return '';
+      }
+    },
+
+    togglePhoto: function(){
+      this.setState({ photoAdded: !this.state.photoAdded })
+    },
+    // required React method
+    render: function(){
+      return (
+        <div className="well clearfix">
+          { this.overflowAlert() }
+          <textarea onChange={this.handleChange} className="form-control"></textarea><br/>
+          <span>{ this.remainingChars() }</span>
+          <button className="btn btn-primary pull-right"
+                  disabled={ this.state.text.length === 0 && !this.state.photoAdded }>Tweet</button>
+          <button className="btn btn-default pull-right"
+                  onClick={ this.togglePhoto } >{ this.state.photoAdded ? "PhotoAdded!" : "Add Photo" }</button>
+        </div>
+      )
     }
-  },
-
-  resetTimer: function(){
-    clearInterval(this.interval);
-    this.setState({ secondsElapsed : 0 });
-    this.start();
-  },
-
-  // this.setState is like the get inital state
-  tick : function() {
-    this.setState({ secondsElapsed : this.state.secondsElapsed + 1 });
-  },
-
-  start: function(){
-    // this code gets rendered after the html is inserted.
-    this.interval = setInterval(this.tick, 1000);
-  },
-
-  componentDidMount : function() {
-     setTimeout(this.start, this.props.timeout);
-
-  },
-
-  // always has a render method
-  render : function(){
-    return (
-        <p>
-          {this.props.name} has {this.state.secondsElapsed}s elapsed
-          <button onClick={this.resetTimer}>RESET</button>
-        </p>
-        );
-  }
 });
 
-var Timers = React.createClass({
-
-  render: function() {
+var MultiTweet = React.createClass({
+  render: function(){
     return (
-      // must return a HTML node
       <div>
-          <Timer timeout={0} name="Timer1"/>
-          <Timer timeout={500 * 10} name="Timer2"/>
-          <Timer timeout={700 * 10} name="Timer3"/>
+        <TweetBox maxLength={140}/>
+        <TweetBox maxLength={500}/>
+        <TweetBox maxLength={200}/>
+        <TweetBox maxLength={420}/>
+        <TweetBox />
       </div>
     )
   }
 });
 
-ReactDOM.render(<Timers />, document.querySelector('.mount-node'));
+ReactDOM
+.render(<MultiTweet />, document.querySelector('.tweet-box'));
