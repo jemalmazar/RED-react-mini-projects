@@ -1,59 +1,70 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-// React Component
-var Timer = React.createClass({
-
-  getInitialState : function(){
+var App = React.createClass({
+  // states are set within the component; change over time
+  getInitialState: function() {
     return {
-      secondsElapsed: 0
+      todos: [
+        { title: 'placeholder todo', complete: false }
+      ]
     }
   },
 
-  resetTimer: function(){
-    clearInterval(this.interval);
-    this.setState({ secondsElapsed : 0 });
-    this.start();
-  },
+  toggleComplete: function(theToDoFromTheInstance) {
+    // .map() takes an existing array
+    var newToDoArray = this.state.todos.map(function(theToDoToModify){
+      if (theToDoFromTheInstance === theToDoToModify) {
+        theToDoToModify.complete = !theToDoToModify.complete;
+      }
+      return theToDoToModify;
+    });
 
-  // this.setState is like the get inital state
-  tick : function() {
-    this.setState({ secondsElapsed : this.state.secondsElapsed + 1 });
-  },
-
-  start: function(){
-    // this code gets rendered after the html is inserted.
-    this.interval = setInterval(this.tick, 1000);
-  },
-
-  componentDidMount : function() {
-     setTimeout(this.start, this.props.timeout);
+    this.setState({ todos: newToDoArray })
 
   },
 
-  // always has a render method
-  render : function(){
+  renderTodos: function(todo, index) {
+    // properties get defined inside companent instances; do not change
+    return <ToDo key={ index }
+                 id={ index }
+                 toggleComplete={ this.toggleComplete }
+                 toDoData={ todo }
+                 />;
+  },
+  // .map() is an array iterator function similar to .forEach()
+  render: function() {
     return (
-        <p>
-          {this.props.name} has {this.state.secondsElapsed}s elapsed
-          <button onClick={this.resetTimer}>RESET</button>
-        </p>
-        );
+      <div className="todo-list">
+        <h1>Todo List!</h1>
+        <ul>
+          { this.state.todos.map(this.renderTodos) }
+        </ul>
+      </div>
+    )
+
   }
 });
 
-var Timers = React.createClass({
+var ToDo = React.createClass({
+  // states are set within the component
+  getInitialState: function() {
+    return {};
+  },
+
+  tellParentToToggleToDoComplete: function() {
+    this.props.toggleComplete(this.props.toDoData);
+  },
 
   render: function() {
     return (
-      // must return a HTML node
-      <div>
-          <Timer timeout={0} name="Timer1"/>
-          <Timer timeout={500 * 10} name="Timer2"/>
-          <Timer timeout={700 * 10} name="Timer3"/>
-      </div>
+      <li> { this.props.toDoData.title }
+        <input type="checkbox" id={ this.props.id } checked={ this.props.toDoData.complete } onClick={ this.tellParentToToggleToDoComplete } />
+        <label htmlFor={ this.props.id } id={ this.props.key }></label>
+        <button><i className="fa fa-trash"></i></button>
+      </li>
     )
   }
 });
 
-ReactDOM.render(<Timers />, document.querySelector('.mount-node'));
+ReactDOM.render(<App />, document.querySelector('#todo-app'));
