@@ -1,13 +1,13 @@
-# RED Academy Mini-Projects in React
+# RED Academy Mini-Project 1 - React Timer
 
 **Project Description**
 
-This small project was used to demonstrate basic functionality of the React library.
+A very basic timer used to demonstrate and introduce the basic features of the React library.
 
 **Tools & Methods Used**
 
 - HTML
-- React
+- [React](https://facebook.github.io/react/)
 
 **What I Learned**
 - most React classes/components have a render method
