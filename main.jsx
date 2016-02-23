@@ -2,7 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 
 var TweetBox = React.createClass({
-    // built-in React method
+    // built-in React object
     propTypes: {
       maxLength: React.PropTypes.number.isRequired
     },
