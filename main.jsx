@@ -16,7 +16,7 @@ var Timer = React.createClass({
     this.start();
   },
 
-  // this.setState is like the get inital state
+  // this.setState refers to property withing the getInitialState method
   tick : function() {
     this.setState({ secondsElapsed : this.state.secondsElapsed + 1 });
   },
@@ -31,7 +31,7 @@ var Timer = React.createClass({
 
   },
 
-  // always has a render method
+  // React classes always have a render method
   render : function(){
     return (
         <p>
