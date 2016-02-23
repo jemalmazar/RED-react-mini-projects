@@ -8,6 +8,7 @@ A very basic timer used to demonstrate and introduce the basic features of the R
 
 - HTML
 - [React](https://facebook.github.io/react/)
+- [Gulp](http://gulpjs.com/)
 
 **What I Learned**
 - most React classes/components have a render method
