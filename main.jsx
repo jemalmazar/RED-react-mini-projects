@@ -22,7 +22,7 @@ var App = React.createClass({
   },
 
   toggleComplete: function(theToDoFromTheInstance) {
-    // .map() takes an existing array
+    // .map() takes an array and...
     var newToDoArray = this.state.todos.map(function(theToDoToModify){
       if (theToDoFromTheInstance === theToDoToModify) {
         theToDoToModify.complete = !theToDoToModify.complete;
@@ -35,7 +35,7 @@ var App = React.createClass({
   },
 
   removeTask: function(toDoData) {
-    // .filter()
+    // .filter() takes an array and...
     var newToDoArray = this.state.todos.filter(function(theToDoToRemove){
       return toDoData === theToDoToRemove ? false : true;
     });
@@ -77,7 +77,7 @@ var App = React.createClass({
 
     return (
       <div className="todo-list">
-        <h1>Todo List!</h1>
+        <h1>To-Do List!</h1>
         <div className="add-todo">
           <form name="addTodoForm" onSubmit={this.addTask}>
             <input type="text" ref="addToDo"/> <span>(Press Enter to add a task)</span>
@@ -93,9 +93,7 @@ var App = React.createClass({
           <div>
             { this.hasCompleted() ?
               <button className="removeSelected" onClick={this.clearCompleted}>Clear completed</button>
-              : ''
-            }
-
+              : ''}
           </div>
         </div>
       </div>
