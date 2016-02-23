@@ -9,6 +9,7 @@ A re-creation of the Twitter tweet box using React.
 - HTML
 - [Bootstrap](http://getbootstrap.com/)
 - [React](https://facebook.github.io/react/)
+- [Gulp](http://gulpjs.com/)
 - [This]( http://reactfordesigners.com/labs/reactjs-introduction-for-people-who-know-just-enough-jquery-to-get-by/) step-by-step tutorial
 
 **What I Learned**
